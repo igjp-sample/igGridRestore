@@ -32,10 +32,10 @@
 			var gridInfo;
 			var grdSettings = Cookies.get('igGridSetting');
 			if (grdSettings != null) {
-				gridInfo = JSON.parse(grdSettings);
+				gridInfo = JSON.parse(grdSettings); //Cookieから情報を取得
 			}
 
-
+			//Cookieに情報がある場合はそのカラム情報（列幅,列順序）を適用
 			var columns = gridInfo ?
 			gridInfo.columns :
 			[
@@ -102,6 +102,7 @@
 						}
 					}
 				],
+				//ソート情報、フィルタ情報がCookieにあれば適用
 				rendered: function(evt, ui) {
 					if (gridInfo.columnSort) {
 						$.each(gridInfo.columnSort, function (index, expression) {

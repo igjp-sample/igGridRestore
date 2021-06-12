@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="http://cdn-na.infragistics.com/igniteui/2021.1/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link href="http://cdn-na.infragistics.com/igniteui/2021.1/latest/css/structure/infragistics.css" rel="stylesheet" />
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="http://cdn-na.infragistics.com/igniteui/2021.1/latest/js/infragistics.core.js"></script>
+    <script src="http://cdn-na.infragistics.com/igniteui/2021.1/latest/js/infragistics.lob.js"></script>
+
+	<!-- A simple, lightweight JavaScript API for handling cookies -->
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
+</head>
+<body>
+
+    <table id="grid"></table>
+    <script>
+        $(function () {
+			var data = [];
+
+            for (var i = 0; i < 100; i++) {
+                data.push({ teatNum1: i, testNum2: 100 - i, testString: 'row' + i,  testDate: new Date().setDate(new Date().getDate() + i)});
+            }
+			var gridInfo;
+			var grdSettings = Cookies.get('igGridSetting');
+			if (grdSettings != null) {
+				gridInfo = JSON.parse(grdSettings);
+			}
+
+
+			var columns = gridInfo ?
+			gridInfo.columns :
+			[
+					{ headerText: "Test Num1", key: "teatNum1", dataType: "number", width: "200px" },
+					{ headerText: "Test Num2", key: "testNum2", dataType: "number", width: "200px" },
+					{ headerText: "Test String", key: "testString", dataType: "string", width: "200px" },
+					{ headerText: "Test Date", key: "testDate", dataType: "date", format: "yyyy-MM-dd", width: "200px" },
+			];
+
+			$("#grid").igGrid({
+            	dataSource: data,
+				dataType: "JSON",
+				width: "100%",
+				height: "600px",
+				responseDataKey: "results",
+				defaultColumnWidth: "120px",
+				columns: columns,
+				features: [
+					{
+						name: 'Selection',
+						mode: 'row',
+						multipleSelection: false,
+						activation: true
+					},
+					{
+						name: "Filtering",
+						type: "local",
+						dataFiltered: function (evt, ui) {
+							SaveGridState(ui.owner.grid);
+						}
+					},
+					{
+						name: "Sorting",
+						type: "local",
+						columnSorted: function (evt, ui) {
+							SaveGridState(ui.owner.grid);
+						}
+					},
+					{
+						name: "Tooltips",
+						style: Modernizr.touch ? "popover" : "tooltip",
+						visibility: "always"
+					},
+					{
+						name: 'Resizing',
+						type: "local"
+					},
+					{
+						name: "ColumnMoving",
+						type: "local",
+						mode: "immediate",
+						columnMoved: function (event, ui) {
+							SaveGridState(ui.owner.grid);
+						}
+					},
+					{
+						name: "Hiding",
+						type: "local",
+						columnShown: function (evt, ui) {
+							SaveGridState(ui.owner.grid);
+						},
+						columnHidden: function (evt, ui) {
+							SaveGridState(ui.owner.grid);
+						}
+					}
+				]
+			});
+			function SaveGridState(grid) {
+
+				var gridInfo = new Object();
+
+				gridInfo.id = grid.id;
+
+				gridInfo.columnFilters = grid.dataSource.settings.filtering.expressions;
+
+				gridInfo.columnSort = grid.dataSource.settings.sorting.expressions;
+
+				gridInfo.columns = grid.options.columns;
+
+				Cookies.set('igGridSetting', JSON.stringify(gridInfo));
+
+			}
+
+
+        });
+     </script>
+</body>
+</html>

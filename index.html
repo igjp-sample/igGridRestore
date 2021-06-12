@@ -15,7 +15,7 @@
     <script src="https://cdn-na.infragistics.com/igniteui/2021.1/latest/js/infragistics.core.js"></script>
     <script src="https://cdn-na.infragistics.com/igniteui/2021.1/latest/js/infragistics.lob.js"></script>
 
-	<!-- A simple, lightweight JavaScript API for handling cookies -->
+	<!-- A simple, lightweight JavaScript API for handling cookies : https://github.com/js-cookie/js-cookie -->
 	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 
 </head>
@@ -32,6 +32,8 @@
 			var gridInfo;
 			var grdSettings = Cookies.get('igGridSetting');
 			if (grdSettings != null) {
+				console.log(grdSettings);
+				console.log(JSON.parse(grdSettings));
 				gridInfo = JSON.parse(grdSettings);
 			}
 
@@ -75,13 +77,11 @@
 						}
 					},
 					{
-						name: "Tooltips",
-						style: Modernizr.touch ? "popover" : "tooltip",
-						visibility: "always"
-					},
-					{
 						name: 'Resizing',
-						type: "local"
+						type: "local",
+						columnResized: function (event, ui) {
+							SaveGridState(ui.owner.grid);
+						}
 					},
 					{
 						name: "ColumnMoving",

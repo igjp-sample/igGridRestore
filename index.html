@@ -32,8 +32,6 @@
 			var gridInfo;
 			var grdSettings = Cookies.get('igGridSetting');
 			if (grdSettings != null) {
-				console.log(grdSettings);
-				console.log(JSON.parse(grdSettings));
 				gridInfo = JSON.parse(grdSettings);
 			}
 
@@ -77,11 +75,13 @@
 						}
 					},
 					{
+						name: "Tooltips",
+						style: Modernizr.touch ? "popover" : "tooltip",
+						visibility: "always"
+					},
+					{
 						name: 'Resizing',
-						type: "local",
-						columnResized: function (event, ui) {
-							SaveGridState(ui.owner.grid);
-						}
+						type: "local"
 					},
 					{
 						name: "ColumnMoving",
@@ -101,7 +101,18 @@
 							SaveGridState(ui.owner.grid);
 						}
 					}
-				]
+				],
+				rendered: function(evt, ui) {
+					if (gridInfo.columnSort) {
+						$.each(gridInfo.columnSort, function (index, expression) {
+							$('#grid').igGridSorting("sortColumn", expression.fieldName, expression.dir);
+						});
+					}
+
+					if (gridInfo.columnFilters) {
+						$("#grid").igGridFiltering('filter', (gridInfo.columnFilters));
+					}
+				}
 			});
 			function SaveGridState(grid) {
 

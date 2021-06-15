@@ -118,7 +118,7 @@
 						if (gridInfo.columns) {
 							$.each(gridInfo.columns, function (index, expression) {
 								if (expression.fixed) {
-									$(".selector").igGridColumnFixing(expression.key)
+									$("#grid").igGridColumnFixing(expression.key)
 								}
 							});
 						}

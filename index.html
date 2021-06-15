@@ -117,9 +117,8 @@
 					if (gridInfo) {
 						if (gridInfo.columns) {
 							$.each(gridInfo.columns, function (index, expression) {
-								console.log(expression)
 								if (expression.fixed) {
-									$(".selector").igGridColumnFixing("teatNum1")
+									$(".selector").igGridColumnFixing(expression.key)
 								}
 							});
 						}

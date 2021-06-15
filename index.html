@@ -113,14 +113,25 @@
 				],
 				//ソート情報、フィルタ情報がCookieにあれば適用
 				rendered: function(evt, ui) {
-					if (gridInfo.columnSort) {
-						$.each(gridInfo.columnSort, function (index, expression) {
-							$('#grid').igGridSorting("sortColumn", expression.fieldName, expression.dir);
-						});
-					}
+					if (gridInfo) {
+						if (gridInfo.columns) {
+							$.each(gridInfo.columns, function (index, expression) {
+								console.log(expression)
+								if (expression.fixed) {
+									$(".selector").igGridColumnFixing("teatNum1")
+								}
+							});
+						}
+						
+						if (gridInfo.columnSort) {
+							$.each(gridInfo.columnSort, function (index, expression) {
+								$('#grid').igGridSorting("sortColumn", expression.fieldName, expression.dir);
+							});
+						}
 
-					if (gridInfo.columnFilters) {
-						$("#grid").igGridFiltering('filter', (gridInfo.columnFilters));
+						if (gridInfo.columnFilters) {
+							$("#grid").igGridFiltering('filter', (gridInfo.columnFilters));
+						}
 					}
 				}
 			});
@@ -129,11 +140,6 @@
 				var gridInfo = new Object();
 
 				gridInfo.id = grid.id;
-				
-				var fixedColumns = new Array();
-				
-				console.log($('#grid').igGridColumnFixing("teatNum1", "columnSettings"));
-
 
 				gridInfo.columnFilters = grid.dataSource.settings.filtering.expressions;
 

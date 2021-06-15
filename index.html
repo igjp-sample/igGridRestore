@@ -100,6 +100,15 @@
 						columnHidden: function (evt, ui) {
 							SaveGridState(ui.owner.grid);
 						}
+					},
+					{
+					    	name: "ColumnFixing",
+						columnFixed: function (evt, ui) {
+							SaveGridState(ui.owner.grid);
+						},
+						columnUnfixed: function (evt, ui) {
+							SaveGridState(ui.owner.grid);
+						}
 					}
 				],
 				//ソート情報、フィルタ情報がCookieにあれば適用

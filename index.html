@@ -138,7 +138,7 @@
 
 				gridInfo.columnSort = grid.dataSource.settings.sorting.expressions;
 
-				gridInfo.columns = grid.options.columns;
+				gridInfo.columns = grid.options.columns.map(({fixed,...rest}) => ({...rest}));
 
 				Cookies.set('igGridSetting', JSON.stringify(gridInfo));
 

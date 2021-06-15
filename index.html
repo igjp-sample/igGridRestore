@@ -102,8 +102,7 @@
 						}
 					},
 					{
-					    	name: "ColumnFixing",
-						type: "local",
+						name: "ColumnFixing",
 						columnFixed: function (evt, ui) {
 							SaveGridState(ui.owner);
 						},
@@ -126,14 +125,15 @@
 				}
 			});
 			function SaveGridState(grid) {
-				
-				console.log(grid)
 
 				var gridInfo = new Object();
 
 				gridInfo.id = grid.id;
 				
+				var fixedColumns = new Array();
 				
+				console.log($('#grid').igGridColumnFixing("option", "columnSettings"));
+
 
 				gridInfo.columnFilters = grid.dataSource.settings.filtering.expressions;
 

@@ -114,14 +114,7 @@
 				//ソート情報、フィルタ情報がCookieにあれば適用
 				rendered: function(evt, ui) {
 					if (gridInfo) {
-						if (gridInfo.columns) {
-							$.each(gridInfo.columns, function (index, expression) {
-								if (expression.fixed) {
-									console.log(expression.key)
-									$("#grid").igGridColumnFixing("fixColumn", "testNum2")
-								}
-							});
-						}
+						$("#grid").igGridColumnFixing("fixColumn", "testNum2");
 						
 						if (gridInfo.columnSort) {
 							$.each(gridInfo.columnSort, function (index, expression) {

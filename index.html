@@ -119,7 +119,7 @@
 							$.each(gridInfo.columns, function (index, expression) {
 								if (expression.fixed) {
 									console.log(expression.key)
-									$("#grid").igGridColumnFixing(expression.key)
+									$("#grid").igGridColumnFixing("fixColumn", expression.key)
 								}
 							});
 						}

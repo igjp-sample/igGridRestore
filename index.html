@@ -103,12 +103,12 @@
 					},
 					{
 					    	name: "ColumnFixing",
-						columnFixed: function (evt, args) {
-							console.log(args)
-							SaveGridState(args.owner.grid);
+						columnFixed: function (evt, ui) {
+							console.log(ui)
+							SaveGridState(ui.owner);
 						},
 						columnUnfixed: function (evt, args) {
-							SaveGridState(args.owner.grid);
+							SaveGridState(args.owner);
 						}
 					}
 				],

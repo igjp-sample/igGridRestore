@@ -103,7 +103,6 @@
 					},
 					{
 						name: "ColumnFixing",
-						type: "local",
 						columnFixed: function (evt, ui) {
 							SaveGridState(ui.owner);
 						},
@@ -119,7 +118,7 @@
 							$.each(gridInfo.columns, function (index, expression) {
 								if (expression.fixed) {
 									console.log(expression.key)
-									$("#grid").igGridColumnFixing("fixColumn", expression.key)
+									$("#grid").igGridColumnFixing("fixColumn", "testNum2")
 								}
 							});
 						}

@@ -25,6 +25,7 @@
     <script>
         $(function () {
 			var data = [];
+            		var fixedColumns = [];
 
             for (var i = 0; i < 100; i++) {
                 data.push({ teatNum1: i, testNum2: 100 - i, testString: 'row' + i,  testDate: new Date().setDate(new Date().getDate() + i)});
@@ -33,6 +34,7 @@
 			var grdSettings = Cookies.get('igGridSetting');
 			if (grdSettings != null) {
 				gridInfo = JSON.parse(grdSettings); //Cookieから情報を取得
+                		fixedColumns = gridInfo.fixedColumns;
 			}
 
 			//Cookieに情報がある場合はそのカラム情報（列幅,列順序）を適用
@@ -46,7 +48,7 @@
 			];
 
 			$("#grid").igGrid({
-            	dataSource: data,
+            		dataSource: data,
 				dataType: "JSON",
 				width: "100%",
 				height: "600px",
@@ -64,50 +66,49 @@
 						name: "Filtering",
 						type: "local",
 						dataFiltered: function (evt, ui) {
-							SaveGridState(ui.owner.grid);
+							SaveGridState(ui.owner.grid,fixedColumns);
 						}
 					},
 					{
 						name: "Sorting",
 						type: "local",
 						columnSorted: function (evt, ui) {
-							SaveGridState(ui.owner.grid);
+							SaveGridState(ui.owner.grid,fixedColumns);
 						}
-					},
-					{
-						name: "Tooltips",
-						style: Modernizr.touch ? "popover" : "tooltip",
-						visibility: "always"
-					},
+					}
 					{
 						name: 'Resizing',
-						type: "local"
+						type: "local",
+                        			columnResized: function (evt, ui) {
+							SaveGridState(ui.owner.grid,fixedColumns);
+						}
 					},
 					{
 						name: "ColumnMoving",
 						type: "local",
 						mode: "immediate",
 						columnMoved: function (event, ui) {
-							SaveGridState(ui.owner.grid);
+							SaveGridState(ui.owner.grid,fixedColumns);
 						}
 					},
 					{
 						name: "Hiding",
 						type: "local",
 						columnShown: function (evt, ui) {
-							SaveGridState(ui.owner.grid);
+							SaveGridState(ui.owner.grid,fixedColumns);
 						},
 						columnHidden: function (evt, ui) {
-							SaveGridState(ui.owner.grid);
+							SaveGridState(ui.owner.grid,fixedColumns);
 						}
 					},
 					{
 						name: "ColumnFixing",
 						columnFixed: function (evt, ui) {
-							SaveGridState(ui.owner);
+                            				console.log(ui.columnIdentifier);
+							SaveGridState(ui.owner,fixedColumns);
 						},
 						columnUnfixed: function (evt, ui) {
-							SaveGridState(ui.owner);
+							SaveGridState(ui.owner,fixedColumns);
 						}
 					}
 				],
@@ -128,7 +129,7 @@
 					}
 				}
 			});
-			function SaveGridState(grid) {
+			function SaveGridState(grid,fixedColumns) {
 
 				var gridInfo = new Object();
 
@@ -138,7 +139,9 @@
 
 				gridInfo.columnSort = grid.dataSource.settings.sorting.expressions;
 
-				gridInfo.columns = grid.options.columns.map(({fixed,...rest}) => ({...rest}));
+				gridInfo.columns = grid.options.columns.map(({fixed,...rest}) => ({...rest})); //fixed プロパティを削除して保存
+
+                		gridInfo.fixedColumns = fixedColumns;
 
 				Cookies.set('igGridSetting', JSON.stringify(gridInfo));
 
